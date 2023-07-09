@@ -33,7 +33,8 @@ string tenantId = "Your Tenant ID";
 
 var accessToken =
     Com.H.GraphAPI.Identity.GIExtensions
-    .GetAccessToken(clientId, clientSecret, tenantId); // use the "GetAccessTokenAsync" method to request the token asynchronously.
+    .GetAccessToken(clientId, clientSecret, tenantId); 
+    // use the "GetAccessTokenAsync" method to request the token asynchronously.
                 
 
 Com.H.GraphAPI.Mail.Message msg = new Com.H.GraphAPI.Mail.Message();
@@ -76,7 +77,8 @@ string tenantId = "Your Tenant ID";
 
 Com.H.GraphAPI.Mail.Message msg = new Com.H.GraphAPI.Mail.Message();
 
-// the following delegate gets called, under the hood by the Send() method, before sending the email to obtain an access token.
+// the following delegate gets called, under the hood by the Send() method, 
+// before sending the email to obtain an access token.
 msg.GetAccessTokenDelegate = () =>
 {
     // you can return your previously issued access token here if it's still valid
@@ -85,7 +87,8 @@ msg.GetAccessTokenDelegate = () =>
     // you can use the following code sample to issue a new access token
     var accessTokenWithExpiryInfo =
         Com.H.GraphAPI.Identity.GIExtensions
-        .GetAccessTokenWithExpiryDate(clientId, clientSecret, tenantId); // async version is also available
+        .GetAccessTokenWithExpiryDate(clientId, clientSecret, tenantId); 
+        // async version of the above is also available
 
     if (string.IsNullOrWhiteSpace(accessTokenWithExpiryInfo.AccessToken))
     {
