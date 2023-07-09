@@ -69,68 +69,68 @@ Also, the sample shows how to re-use the same access token for multiple requests
 And also shows how to attach a file from a stream.
 
 ```csharp
-            string clientId = "Your Client ID";
-            string clientSecret = "Your Client Secret";
-            string tenantId = "Your Tenant ID";
+string clientId = "Your Client ID";
+string clientSecret = "Your Client Secret";
+string tenantId = "Your Tenant ID";
 
 
-            Com.H.GraphAPI.Mail.Message msg = new Com.H.GraphAPI.Mail.Message();
+Com.H.GraphAPI.Mail.Message msg = new Com.H.GraphAPI.Mail.Message();
 
-            // the following delegate gets called, under the hood by the Send() method, before sending the email to obtain an access token.
-            msg.GetAccessTokenDelegate = () =>
-            {
-                // you can return your previously issued access token here if it's still valid
-                // otherwise, you can issue a new access token here.
+// the following delegate gets called, under the hood by the Send() method, before sending the email to obtain an access token.
+msg.GetAccessTokenDelegate = () =>
+{
+    // you can return your previously issued access token here if it's still valid
+    // otherwise, you can issue a new access token here.
 
-                // you can use the following code sample to issue a new access token
-                var accessTokenWithExpiryInfo =
-                    Com.H.GraphAPI.Identity.GIExtensions
-                    .GetAccessTokenWithExpiryDate(clientId, clientSecret, tenantId); // async version is also available
+    // you can use the following code sample to issue a new access token
+    var accessTokenWithExpiryInfo =
+        Com.H.GraphAPI.Identity.GIExtensions
+        .GetAccessTokenWithExpiryDate(clientId, clientSecret, tenantId); // async version is also available
 
-                if (string.IsNullOrWhiteSpace(accessTokenWithExpiryInfo.AccessToken))
-                {
-                    Console.WriteLine("Error obtaining access token");
-                    // your logic to log the error goes here
+    if (string.IsNullOrWhiteSpace(accessTokenWithExpiryInfo.AccessToken))
+    {
+        Console.WriteLine("Error obtaining access token");
+        // your logic to log the error goes here
 
-                    // the following exception will be thrown when calling msg.Send()
-                    throw new Exception("Error obtaining access token");
-                }
+        // the following exception will be thrown when calling msg.Send()
+        throw new Exception("Error obtaining access token");
+    }
 
-                Console.WriteLine($"access token expires on {accessTokenWithExpiryInfo.ExpiresOn}");
-                return accessTokenWithExpiryInfo.AccessToken;
+    Console.WriteLine($"access token expires on {accessTokenWithExpiryInfo.ExpiresOn}");
+    return accessTokenWithExpiryInfo.AccessToken;
 
-            }; ;
+}; ;
 
 
-            msg.From = "yourName@yourCompany.com";
-            msg.To.Add("yourName@yourCompany.com");
-            msg.Subject = "Testing MS Graph API";
-            msg.Body = "This is a test email sent via <strong>MS Graph API</strong>";
+msg.From = "yourName@yourCompany.com";
+msg.To.Add("yourName@yourCompany.com");
+msg.Subject = "Testing MS Graph API";
+msg.Body = "This is a test email sent via <strong>MS Graph API</strong>";
 
-            // read from a file path
-            msg.Attachments.Add(@"c:\temp\email\test1.txt");
-            msg.Attachments.Add(@"c:\temp\email\test2.txt");
+// read from a file path
+msg.Attachments.Add(@"c:\temp\email\test1.txt");
+msg.Attachments.Add(@"c:\temp\email\test2.txt");
 
-            // add content directly
-            msg.Attachments.AddContent("direct content test", "test3.txt");
+// add content directly
+msg.Attachments.AddContent("direct content test", "test3.txt");
 
-            // read from an IO Stream
-            using (var fs = new FileStream(@"c:\temp\email\test4.txt", FileMode.Open, FileAccess.Read))
-            {
-                msg.Attachments.Add(fs, "test4.txt");
-                // the stream can be safely closed here as it will be copied to a memory stream under the hood.
-            }
+// read from an IO Stream
+using (var fs = new FileStream(@"c:\temp\email\test4.txt", FileMode.Open, FileAccess.Read))
+{
+    msg.Attachments.Add(fs, "test4.txt");
+    // the stream can be safely closed here as it will be copied to a memory stream under the hood.
+}
 
-            var result = msg.Send();
+var result = msg.Send();
             
-            if (result.IsSuccessStatusCode)
-            {
-                Console.WriteLine("Email sent successfully");
-            }
-            else
-            {
-                Console.WriteLine("Email failed to send");
-            }
+if (result.IsSuccessStatusCode)
+{
+    Console.WriteLine("Email sent successfully");
+}
+else
+{
+    Console.WriteLine("Email failed to send");
+}
 
 
 ```
