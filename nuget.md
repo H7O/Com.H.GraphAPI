@@ -1,0 +1,5 @@
+# Com.H.GraphAPI
+Kindly visit the project's github page for documentation [https://github.com/H7O/Com.H.GraphAPI](https://github.com/H7O/Com.H.GraphAPI)
+
+There is also the .NET 2.0 standard version of this library that supports 4.x .NET frameworks (adds support to .NET 4.6 to 4.8.x). 
+To get the .NET 2.0 standard version, visit [https://www.nuget.org/packages/Com.H.GraphAPI#versions-body-tab](https://www.nuget.org/packages/Com.H.GraphAPI#versions-body-tab) and select the latest version of this library that starts with 2.0.0.x
